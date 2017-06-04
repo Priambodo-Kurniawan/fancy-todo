@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-Pparser');
 const cors = require('cors');
 const mongoose = require('mongoose');
+mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost/fancy-todo');
 
 var app = express();
