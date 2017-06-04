@@ -1,20 +1,27 @@
 var Todo = require('../models/todo');
-var util = requier('../helpers/util');
+var util = require('../helpers/util');
+var methods = {}
+
+methods.getAll = (req, res) => {
+  Todo.find({}, (err, todos) => {
+    res.send(todos)
+  })
+}
 
 methods.get = (req, res) => {
-  util.userInfo(req.body.token, function(result){
-    Todo.find({creator: result.id}, (err, todos) => {
+  util.userInfo(req.body.token, function(user){
+    Todo.find({creator: user.id}, (err, todos) => {
       res.send(todos)
     })
-  }
+  })
 }
 
 methods.create = (req, res) => {
   var task = req.body.task;
-  util.userInfo(req.body.token, function(result){
+  util.userInfo(req.body.token, function(user){
     Todo.create({
-      task: task;
-      creator: result.id,
+      task: task,
+      creator: user.id,
       completed: false,
       tags: req.body.tags
     })
@@ -35,10 +42,10 @@ methods.getOne = (req, res) => {
 }
 
 methods.update = (req, res) => {
-  util.userInfo(req.body.token, function(result) {
+  util.userInfo(req.body.token, function(user) {
     Todo.findById(req.params.id)
     .then(todo =>{
-      if(todo.creator == result.id){
+      if(todo.creator == user.id){
         Todo.update({_id:req.params.id}, req,body)
         .then(()=>{
           res.send('task has been updated')
@@ -52,10 +59,10 @@ methods.update = (req, res) => {
 }
 
 methods.delete = (req, res) => {
-  util.userInfo(req.body.token, function(result){
+  util.userInfo(req.body.token, function(user){
     Todo.findById(req.params.id)
     .then(todo => {
-      if(todo.creator == result.id){
+      if(todo.creator == user.id){
         todo.remove()
         .then(()=>{
           res.send('task has been deleted')

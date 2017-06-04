@@ -1,6 +1,7 @@
 require('dotenv').config();
 const secret = process.env.TOKEN_SECRET;
 var jwt = require('jsonwebtoken')
+var methods = {}
 
 methods.userInfo = (token, callback) => {
   if(token){

@@ -1,12 +1,12 @@
 const express = require('express');
-const bodyParser = require('body-Pparser');
+const bodyParser = require('body-parser');
 const cors = require('cors');
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost/fancy-todo');
 
 var app = express();
-var user = require('./routes/users');
+var users = require('./routes/users');
 var todos = require('./routes/todos');
 var index = require('./routes/index');
 
@@ -19,5 +19,5 @@ app.use('/api/todos', todos);
 app.use('/', index);
 
 app.listen(3000, () => {
-  console.log('Listening on port 3000';
+  console.log('Listening on port 3000');
 })
