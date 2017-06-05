@@ -40,23 +40,28 @@ methods.loginFB = (req, res) => {
 
   User.findOne({email: email})
   .then(user => {
-    if(user.fb_account){
+    if(user !== null){
       var token = jwt.sign({id: user.id, email:user.email, username:user.username}, secret);
       res.send(token);
     } else {
       var salt = bcrypt.genSaltSync(saltRounds);
       var hash = bcrypt.hashSync('accountfb', salt);
-
+      console.log('create new account');
       var newFBUser = new User({
-        name: req.body.name,
+        username: req.body.username,
         email: req.body.email,
         password: hash,
         fb_account: true
       })
+      console.log(newFBUser);
       newFBUser.save((err, user) => {
         if(err) {
+          console.log(err);
           res.send(err.erros)
-        } else res.send(user)
+        } else {
+          console.log(user);
+          res.send(user)
+        }
       })
     }
   })
